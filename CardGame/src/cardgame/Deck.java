@@ -3,7 +3,6 @@ package cardgame;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Random;
 
 import cardgame.Card.Rank;
 import cardgame.Card.Suit;
