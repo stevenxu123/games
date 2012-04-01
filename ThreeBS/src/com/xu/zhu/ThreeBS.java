@@ -1,17 +1,21 @@
 package com.xu.zhu;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
-import java.io.Writer;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import cardgame.*;
+import cardgame.Card.Rank;
+import cardgame.Card.Suit;
 
 public class ThreeBS {
 	private static final int DEFAULT_PORT = 9001;
@@ -35,21 +39,30 @@ public class ThreeBS {
 		// Start a game of 3-card BS
 		ThreeBS game = new ThreeBS();
 		
-		// io stuff
-		try {
-			ServerSocket server = new ServerSocket(DEFAULT_PORT);
-			Socket channel = server.accept();
-			
-			PrintWriter out = new PrintWriter(channel.getOutputStream());
-			Reader reader = new InputStreamReader(channel.getInputStream());
-			BufferedReader in = new BufferedReader(reader);
-			
-			String data = in.readLine();
-			out.println("Hey! I heard you over this socket!");
-		} catch (IOException e) {
-			
+//		// io stuff
+//		try {
+//			ServerSocket server = new ServerSocket(DEFAULT_PORT);
+//			Socket channel = server.accept();
+//			
+//			PrintWriter out = new PrintWriter(channel.getOutputStream());
+//			Reader reader = new InputStreamReader(channel.getInputStream());
+//			BufferedReader in = new BufferedReader(reader);
+//			
+//			String data = in.readLine();
+//			out.println("Hey! I heard you over this socket!");
+//		} catch (IOException e) {
+//			
+//		}
+//		game.startGame(2,3);
+		List<Card> temp = new ArrayList<Card>();
+		temp.add(new Card(Rank.ACE, Suit.SPADES));
+		temp.add(new Card(Rank.THREE, Suit.HEARTS));
+		
+		Collection<Card> cards = Collections.unmodifiableCollection(temp);
+		for (Card card : cards) {
+			System.out.println(card);
 		}
-		game.startGame(2,3);
+		System.out.println("██ ██ ██");
 	}
 	
 	public void acceptClients(ServerSocket server, int maxClients) {
@@ -72,9 +85,6 @@ public class ThreeBS {
 	
 	public void startGame(int numPlayers, int numCards) {
 		players.add(self);
-		for (int i = 0; i < numPlayers - 1; i++) {
-			playerThreads.add(new Thread(new ThreeBSPlayer()));
-		}
 		
 		while (isWaitingForPlayers) {
 			try {
@@ -90,6 +100,11 @@ public class ThreeBS {
 		}
 	}
 	
+	public static void startServer(Console console) {
+		System.out.println("ThreeBS Game v1.0");
+		System.out.println("~~~~~~~~~~~~~~~~~\n");
+		
+	}
 	public void addPlayer(ThreeBSPlayer player) {
 		players.add(player);
 	}
